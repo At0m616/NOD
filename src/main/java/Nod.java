@@ -13,7 +13,42 @@ import java.util.Scanner;
 
 public class Nod {
 
-    public static List<Integer> simpleMultiplier(int input) {
+    private final int firstNum;
+    private final int secondNum;
+
+    public Nod(int firstNum, int secondNum) {
+        if (firstNum < 1 || secondNum < 1) {
+            throw new IllegalArgumentException();
+        }
+        //firstNum always < secondNum
+        if (firstNum < secondNum) {
+            this.firstNum = firstNum;
+            this.secondNum = secondNum;
+        } else {
+            this.firstNum = secondNum;
+            this.secondNum = firstNum;
+        }
+    }
+
+    public int getFirstNum() {
+        return firstNum;
+    }
+
+    public int getSecondNum() {
+        return secondNum;
+    }
+
+    public int getNod() {
+
+        if (firstNum == secondNum) {
+            return firstNum;
+        }
+        List<Integer> firstNumMultiplierList = simpleMultiplier(firstNum);
+        List<Integer> secondNumMultiplierList = simpleMultiplier(secondNum);
+        return commonMultiple(firstNumMultiplierList, secondNumMultiplierList);
+    }
+
+    private static List<Integer> simpleMultiplier(int input) {
         List<Integer> resultList = new ArrayList<>();
         int multiplier = 2;
         int value = input;
@@ -31,26 +66,10 @@ public class Nod {
 
     }
 
-    public static int commonMultiple(List<Integer> compare1, List<Integer> compare2) {
+    private static int commonMultiple(List<Integer> compare1, List<Integer> compare2) {
         compare1.retainAll(compare2);
         return compare1.stream().reduce(1, (i1, i2) -> i1 * i2);
     }
 
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int firstNum = sc.nextInt();
-        int secondNum = sc.nextInt();
-
-        if (firstNum == secondNum) {
-            System.out.println(firstNum);
-            return;
-        }
-
-        List<Integer> res = simpleMultiplier(firstNum);
-        List<Integer> res2 = simpleMultiplier(secondNum);
-
-        System.out.println(commonMultiple(res, res2));
-    }
 }
 
